@@ -28,9 +28,14 @@ app.use(cookieParser());
 // Routes imports
 
 import userRouter from "./routes/user.routes.js";
+import interviewExperience from "./routes/interviewExp.routes.js";
+import userDashboard from "./routes/userDashboard.routes.js";
+
 
 // Routes Declaration
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/interview-exprience", interviewExperience);
+app.use("/api/v1/profile", userDashboard);
 
 export default app;
