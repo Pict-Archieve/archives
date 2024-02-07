@@ -37,6 +37,15 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    resume: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    interviewExperiences: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "InterviewExperience",
+      },
+    ],
   },
   {
     timestamps: true,

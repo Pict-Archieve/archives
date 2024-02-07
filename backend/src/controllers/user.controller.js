@@ -6,9 +6,9 @@ import { Api_Response } from "../utils/API_Response.js";
 
 const generateAccessTokenAndRefreshToken = async function (userId) {
   try {
-    const user = await User.findById(useId);
-    const accessToken = user.getAccessToken();
-    const refreshToken = user.getRefreshToken();
+    const user = await User.findById(userId);
+    const accessToken = await user.getAccessToken();
+    const refreshToken = await user.getRefreshToken();
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: true });
     return { accessToken, refreshToken };
@@ -22,7 +22,6 @@ const generateAccessTokenAndRefreshToken = async function (userId) {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, fullName, C2K2, password } = req.body;
-  console.log(C2K2);
   if (
     [username, fullName, C2K2, password].some((field) => field?.trim() === "")
   ) {
@@ -102,7 +101,7 @@ const loginUser = asyncHandler(async (req, res) => {
     await generateAccessTokenAndRefreshToken(user._id);
   // delete user.password;
   // user.refreshToken = refreshToken;
-  const loggedInUser = User.findOne(user._id).select("-password -refreshToken");
+  const loggedInUser = await User.findOne(user._id).select("-password -refreshToken");
 
   const options = {
     http: true,
@@ -148,5 +147,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("refreshToken", options)
     .json(new Api_Response(200, "User Logged Out "));
 });
+
+
 
 export { registerUser, loginUser, logoutUser };
